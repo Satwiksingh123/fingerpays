@@ -170,7 +170,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signInWithOAuth = async (provider: 'google' | 'facebook' | 'twitter') => {
     try {
       setLoading(true);
-      const redirectUrl = `${window.location.origin}/`;
+      // Ensure we use the correct localhost port
+      const origin = window.location.hostname === 'localhost' 
+        ? 'http://localhost:8080' 
+        : window.location.origin;
+      const redirectUrl = `${origin}/`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
